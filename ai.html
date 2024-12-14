@@ -70,6 +70,7 @@
 
         <h2>Generated Resume:</h2>
         <div id="output" class="output"></div>
+        <button class="button" id="downloadButton" style="display: none;">Download as PDF</button>
     </main>
 
     <script>
@@ -111,6 +112,17 @@
             const data = await response.json();
 
             document.getElementById('output').innerHTML = data.generatedResume;
+            document.getElementById('downloadButton').style.display = 'inline-block';
+        });
+
+        document.getElementById('downloadButton').addEventListener('click', () => {
+            const outputContent = document.getElementById('output').innerHTML;
+
+            const blob = new Blob([outputContent], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'resume.pdf';
+            link.click();
         });
     </script>
 </body>

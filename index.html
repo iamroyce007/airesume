@@ -26,6 +26,7 @@
             padding: 1rem;
             margin: 1rem 0;
             cursor: pointer;
+            text-align: center;
         }
         .layout:hover {
             background-color: #e8e8e8;
@@ -78,36 +79,46 @@
         const layouts = document.querySelectorAll('.layout');
         let selectedLayout = '';
 
+        // Handle layout selection
         layouts.forEach(layout => {
             layout.addEventListener('click', () => {
-                layouts.forEach(l => l.style.border = '1px solid #ccc');
-                layout.style.border = '2px solid #007BFF';
+                layouts.forEach(l => l.style.border = '1px solid #ccc'); // Reset borders
+                layout.style.border = '2px solid #007BFF'; // Highlight selected
                 selectedLayout = layout.dataset.layout;
             });
         });
 
+        // Handle resume generation
         document.getElementById('generateButton').addEventListener('click', () => {
-            const inputText = document.getElementById('inputText').value;
+            const inputText = document.getElementById('inputText').value.trim();
 
             if (!selectedLayout) {
                 alert('Please select a layout!');
                 return;
             }
 
-            if (!inputText.trim()) {
+            if (!inputText) {
                 alert('Please enter some resume data!');
                 return;
             }
 
-            // Mocking API response
-            const mockResponse = {
-                generatedResume: `<h1>${selectedLayout} Resume</h1><p>${inputText}</p>`
-            };
+            // Simulate generated resume using mock logic
+            const mockResponse = `
+                <div>
+                    <h2>${selectedLayout.charAt(0).toUpperCase() + selectedLayout.slice(1)} Layout</h2>
+                    <p>${inputText.replace(/\n/g, '<br>')}</p>
+                </div>
+            `;
 
-            document.getElementById('output').innerHTML = mockResponse.generatedResume;
+            // Display generated resume
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = mockResponse;
+
+            // Enable the download button
             document.getElementById('downloadButton').style.display = 'inline-block';
         });
 
+        // Handle PDF download
         document.getElementById('downloadButton').addEventListener('click', () => {
             const outputContent = document.getElementById('output');
             const options = {
